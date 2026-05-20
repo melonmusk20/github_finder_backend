@@ -30,4 +30,9 @@ public class Controller {
 
         return restTemplate.getForObject(url, Object.class);
     }
+
+    @GetMapping("/history")
+    public Object getHistory() {
+        return repo.findAll();
+    }
 }
