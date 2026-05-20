@@ -1,13 +1,13 @@
 package com.github_finder.backend;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/github")
+@CrossOrigin("*")
 public class Controller {
 
     private final Repository repo;
@@ -23,16 +23,23 @@ public class Controller {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        Model history = new Model();
-        history.setUsername(username);
+        try {
 
-        repo.save(history);
+            Model history = new Model();
+            history.setUsername(username);
+
+            repo.save(history);
+
+        } catch (Exception e) {
+
+            System.out.println(e.getMessage());
+        }
 
         return restTemplate.getForObject(url, Object.class);
     }
 
     @GetMapping("/history")
-    public Object getHistory() {
+    public List<Model> getHistory() {
         return repo.findAll();
     }
 }
